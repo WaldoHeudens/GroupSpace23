@@ -55,15 +55,14 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         if (!context.Roles.Any())
         {
             context.Roles.AddRange(
-                new IdentityRole { Name = "SystemAdministrator", Id = "SystemAdministrator" },
-                new IdentityRole { Name = "User", Id = "User" }
+                new IdentityRole { Name = "SystemAdministrator", Id = "SystemAdministrator", NormalizedName = "SYSTEMADMINISTRATOR" },
+                new IdentityRole { Name = "User", Id = "User", NormalizedName = "USER" }
             );
 
-            context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "SystemAdministrators", UserId = admin.Id });
+            context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "SystemAdministrator", UserId = admin.Id });
 
             context.SaveChanges();
         }
-
 
         if (!context.Groups.Any())
         {
