@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroupSpace23.Controllers
 {
+    [Authorize (Roles = "SystemAdministrator")]
     public class ParametersController : Controller
     {
         private readonly MyDbContext _context;

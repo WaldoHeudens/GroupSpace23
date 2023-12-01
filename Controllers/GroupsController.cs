@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroupSpace23.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
         private readonly MyDbContext _context;
@@ -19,6 +21,7 @@ namespace GroupSpace23.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: Groups
         public async Task<IActionResult> Index()
         {
