@@ -52,6 +52,8 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         GroupSpace23User dummy = context.Users.First(u => u.UserName == "Dummy");
         GroupSpace23User admin = context.Users.First(u => u.UserName == "Admin");
 
+        Globals.DummyUser = dummy;  // Make sure the dummy user is always available
+
         if (!context.Roles.Any())
         {
             context.Roles.AddRange(
@@ -76,6 +78,7 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
             context.Message.Add(new Message { Title = "Dummy", Body = "", Sent = DateTime.Now, Deleted = DateTime.Now, Recipient = dummyGroup });
             context.SaveChanges();
         }
+        context.SaveChanges();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
