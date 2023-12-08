@@ -59,11 +59,12 @@ namespace GroupSpace23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Started,Ended")] Group @group)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Started,Ended,StartedById")] Group @group)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(@group);
+                group.StartedById = _context.Users.First(u => u.UserName == User.Identity.Name).Id;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -91,7 +92,7 @@ namespace GroupSpace23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Started,Ended")] Group @group)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Started,Ended,StartedById")] Group @group)
         {
             if (id != @group.Id)
             {

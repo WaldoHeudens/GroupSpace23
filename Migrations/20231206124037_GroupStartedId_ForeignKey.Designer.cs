@@ -4,6 +4,7 @@ using GroupSpace23.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GroupSpace23.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class GroupSpace23ContextModelSnapshot : ModelSnapshot
+    [Migration("20231206124037_GroupStartedId_ForeignKey")]
+    partial class GroupStartedId_ForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,49 +131,6 @@ namespace GroupSpace23.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("GroupSpace23.Models.GroupMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Added")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AddedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsHost")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MemberId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Removed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RemovedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddedById");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("GroupMembers");
-                });
-
             modelBuilder.Entity("GroupSpace23.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -206,7 +166,7 @@ namespace GroupSpace23.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("GroupSpace23.Models.Parameter", b =>
@@ -227,7 +187,7 @@ namespace GroupSpace23.Migrations
 
                     b.HasKey("Name");
 
-                    b.ToTable("Parameters");
+                    b.ToTable("Parameter");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -376,33 +336,6 @@ namespace GroupSpace23.Migrations
                         .IsRequired();
 
                     b.Navigation("StartedBy");
-                });
-
-            modelBuilder.Entity("GroupSpace23.Models.GroupMember", b =>
-                {
-                    b.HasOne("GroupSpace23.Areas.Identity.Data.GroupSpace23User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GroupSpace23.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GroupSpace23.Areas.Identity.Data.GroupSpace23User", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AddedBy");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("GroupSpace23.Models.Message", b =>

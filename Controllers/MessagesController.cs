@@ -35,7 +35,7 @@ namespace GroupSpace23.Controllers
 
             if (selectMode == "R")
             {
-                viewModel.Messages = _context.Message
+                viewModel.Messages = _context.Messages
                                                 .Where(m => m.Deleted > DateTime.Now)
                                                 .Include(m => m.Recipient)
                                                 .Include(m => m.Sender)
@@ -44,7 +44,7 @@ namespace GroupSpace23.Controllers
             else
             {
                 GroupSpace23User user = _context.Users.First(u => u.UserName == User.Identity.Name);
-                viewModel.Messages = _context.Message
+                viewModel.Messages = _context.Messages
                                    .Where(m => m.Deleted > DateTime.Now && m.SenderId == user.Id)
                                    .Include(m => m.Recipient)
                                    .Include(m => m.Sender)
@@ -56,12 +56,12 @@ namespace GroupSpace23.Controllers
         // GET: Messages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Message == null)
+            if (id == null || _context.Messages == null)
             {
                 return NotFound();
             }
 
-            var message = await _context.Message
+            var message = await _context.Messages
                 .Include(m => m.Recipient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
@@ -107,12 +107,12 @@ namespace GroupSpace23.Controllers
         // GET: Messages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Message == null)
+            if (id == null || _context.Messages == null)
             {
                 return NotFound();
             }
 
-            var message = await _context.Message.FindAsync(id);
+            var message = await _context.Messages.FindAsync(id);
             if (message == null)
             {
                 return NotFound();
@@ -160,12 +160,12 @@ namespace GroupSpace23.Controllers
         // GET: Messages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Message == null)
+            if (id == null || _context.Messages == null)
             {
                 return NotFound();
             }
 
-            var message = await _context.Message
+            var message = await _context.Messages
                 .Include(m => m.Recipient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
@@ -181,14 +181,14 @@ namespace GroupSpace23.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Message == null)
+            if (_context.Messages == null)
             {
                 return Problem("Entity set 'GroupSpace23Context.Message'  is null.");
             }
-            var message = await _context.Message.FindAsync(id);
+            var message = await _context.Messages.FindAsync(id);
             if (message != null)
             {
-                _context.Message.Remove(message);
+                _context.Messages.Remove(message);
             }
             
             await _context.SaveChangesAsync();
@@ -197,7 +197,7 @@ namespace GroupSpace23.Controllers
 
         private bool MessageExists(int id)
         {
-          return (_context.Message?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Messages?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

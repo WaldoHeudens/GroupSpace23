@@ -73,9 +73,18 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         }
         Group dummyGroup = context.Groups.FirstOrDefault(g => g.Name == "Dummy");
 
-        if (!context.Message.Any())
+        // Was nodig om bij de migratie een foreign-key constraint probleem te hebben
+        //List <Group> groups = context.Groups.ToList();
+        //foreach (Group g in groups)
+        //{ 
+        //    g.StartedById = dummy.Id;
+        //    context.Update(g);
+        //}
+        //context.SaveChanges();
+
+        if (!context.Messages.Any())
         {
-            context.Message.Add(new Message { Title = "Dummy", Body = "", Sent = DateTime.Now, Deleted = DateTime.Now, Recipient = dummyGroup });
+            context.Messages.Add(new Message { Title = "Dummy", Body = "", Sent = DateTime.Now, Deleted = DateTime.Now, Recipient = dummyGroup });
             context.SaveChanges();
         }
         context.SaveChanges();
@@ -96,8 +105,10 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
 
     public DbSet<GroupSpace23.Models.Group> Groups { get; set; } = default!;
 
-    public DbSet<GroupSpace23.Models.Message> Message { get; set; } = default!;
+    public DbSet<GroupSpace23.Models.Message> Messages { get; set; } = default!;
 
-    public DbSet<GroupSpace23.Models.Parameter> Parameter { get; set; } = default!;
+    public DbSet<GroupSpace23.Models.Parameter> Parameters { get; set; } = default!;
+
+    public DbSet<GroupSpace23.Models.GroupMember> GroupMembers { get; set; } = default!;
 
 }

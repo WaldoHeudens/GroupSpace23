@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GroupSpace23.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace GroupSpace23.Areas.Identity.Data;
@@ -11,5 +12,6 @@ public class GroupSpace23User : IdentityUser
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+
 }
 

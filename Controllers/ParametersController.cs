@@ -24,20 +24,20 @@ namespace GroupSpace23.Controllers
         // GET: Parameters
         public async Task<IActionResult> Index()
         {
-              return _context.Parameter != null ? 
-                          View(await _context.Parameter.ToListAsync()) :
+              return _context.Parameters != null ? 
+                          View(await _context.Parameters.ToListAsync()) :
                           Problem("Entity set 'MyDbContext.Parameter'  is null.");
         }
 
         // GET: Parameters/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Parameter == null)
+            if (id == null || _context.Parameters == null)
             {
                 return NotFound();
             }
 
-            var parameter = await _context.Parameter
+            var parameter = await _context.Parameters
                 .FirstOrDefaultAsync(m => m.Name == id);
             if (parameter == null)
             {
@@ -51,12 +51,12 @@ namespace GroupSpace23.Controllers
         // GET: Parameters/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Parameter == null)
+            if (id == null || _context.Parameters == null)
             {
                 return NotFound();
             }
 
-            var parameter = await _context.Parameter.FindAsync(id);
+            var parameter = await _context.Parameters.FindAsync(id);
             if (parameter == null)
             {
                 return NotFound();
@@ -102,7 +102,7 @@ namespace GroupSpace23.Controllers
 
         private bool ParameterExists(string id)
         {
-          return (_context.Parameter?.Any(e => e.Name == id)).GetValueOrDefault();
+          return (_context.Parameters?.Any(e => e.Name == id)).GetValueOrDefault();
         }
     }
 }
