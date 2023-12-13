@@ -24,30 +24,10 @@ namespace GroupSpace23.Controllers
         // GET: Parameters
         public async Task<IActionResult> Index()
         {
-              return _context.Parameters != null ? 
-                          View(await _context.Parameters.ToListAsync()) :
-                          Problem("Entity set 'MyDbContext.Parameter'  is null.");
+              return View(await _context.Parameters.OrderBy(p => p.Name).ToListAsync());
         }
 
-        // GET: Parameters/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null || _context.Parameters == null)
-            {
-                return NotFound();
-            }
 
-            var parameter = await _context.Parameters
-                .FirstOrDefaultAsync(m => m.Name == id);
-            if (parameter == null)
-            {
-                return NotFound();
-            }
-
-            return View(parameter);
-        }
-
- 
         // GET: Parameters/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -69,7 +49,7 @@ namespace GroupSpace23.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Value,UserId,LastChanged")] Parameter parameter)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,Value,UserId,Description,LastChanged,Obsolete,Destination")] Parameter parameter)
         {
             if (id != parameter.Name)
             {

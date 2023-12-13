@@ -17,7 +17,6 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
     public static async Task DataInitializer(MyDbContext context, UserManager<GroupSpace23User> userManager)
     {
 
-        AddParameters();
 
         if (!context.Users.Any())
         {
@@ -49,8 +48,11 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
 
         }
 
+
         GroupSpace23User dummy = context.Users.First(u => u.UserName == "Dummy");
         GroupSpace23User admin = context.Users.First(u => u.UserName == "Admin");
+
+        AddParameters(context, admin);
 
         Globals.DummyUser = dummy;  // Make sure the dummy user is always available
 
@@ -98,9 +100,22 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         // Add your customizations after calling base.OnModelCreating(builder);
     }
 
-    static void AddParameters()
+    static void AddParameters(MyDbContext context, GroupSpace23User user)
     {
-
+        if (!context.Parameters.Any())
+        {
+            context.Parameters.AddRange(
+                new Parameter { Name = "Version", Value="0.1.0", Description = "Huidige versie van de parameterlijst", Destination = "System", UserId = user.Id},
+                new Parameter { Name = "Mail.Server", Value = "ergens.groupspace.be", Description = "Naam van de gebruikte pop-server", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.Port", Value = "25", Description = "Poort van de smtp-server", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.Account", Value = "SmtpServer", Description = "Acount-naam van de smtp-server", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.Password", Value = "xxxyyy!2315", Description = "Wachtwoord van de smtp-server", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.Security", Value = "true", Description = "Is SSL or TLS encryption used (true or false)", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.SenderEmail", Value = "administrator.groupspace.be", Description = "E-mail van de smtp-verzender", Destination = "Mail", UserId = user.Id },
+                new Parameter { Name = "Mail.SenderName", Value = "Administrator", Description = "Naam van de smtp-verzender", Destination = "Mail", UserId = user.Id }
+            );
+                );
+        }
     }
 
     public DbSet<GroupSpace23.Models.Group> Groups { get; set; } = default!;

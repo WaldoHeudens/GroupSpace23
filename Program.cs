@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using GroupSpace23.Data;
 using Microsoft.AspNetCore.Identity;
 using GroupSpace23.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using GroupSpace2022.Services;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace GroupSpace23
 {
@@ -19,6 +22,21 @@ namespace GroupSpace23
             builder.Services.AddDefaultIdentity<GroupSpace23User>((IdentityOptions options) => options.SignIn.RequireConfirmedAccount = false)
                .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<MyDbContext>();
+
+            builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+            builder.Services.Configure<MailKitOptions>(options =>
+            {
+                options.Server = builder.Configuration["ExternalProviders:MailKit:SMTP:Address"];
+                options.Port = Convert.ToInt32(builder.Configuration["ExternalProviders:MailKit:SMTP:Port"]);
+                options.Account = builder.Configuration["ExternalProviders:MailKit:SMTP:Account"];
+                options.Password = builder.Configuration["ExternalProviders:MailKit:SMTP:Password"];
+                options.SenderEmail = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"];
+                options.SenderName = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderName"];
+
+                // Set it to TRUE to enable ssl or tls, FALSE otherwise
+                options.Security = true;  // true zet ssl or tls aan
+            });
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
