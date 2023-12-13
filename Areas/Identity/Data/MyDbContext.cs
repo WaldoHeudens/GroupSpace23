@@ -105,7 +105,7 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         if (!context.Parameters.Any())
         {
             context.Parameters.AddRange(
-                new Parameter { Name = "Version", Value="0.1.0", Description = "Huidige versie van de parameterlijst", Destination = "System", UserId = user.Id},
+                new Parameter { Name = "Version", Value = "0.1.0", Description = "Huidige versie van de parameterlijst", Destination = "System", UserId = user.Id },
                 new Parameter { Name = "Mail.Server", Value = "ergens.groupspace.be", Description = "Naam van de gebruikte pop-server", Destination = "Mail", UserId = user.Id },
                 new Parameter { Name = "Mail.Port", Value = "25", Description = "Poort van de smtp-server", Destination = "Mail", UserId = user.Id },
                 new Parameter { Name = "Mail.Account", Value = "SmtpServer", Description = "Acount-naam van de smtp-server", Destination = "Mail", UserId = user.Id },
@@ -114,8 +114,15 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
                 new Parameter { Name = "Mail.SenderEmail", Value = "administrator.groupspace.be", Description = "E-mail van de smtp-verzender", Destination = "Mail", UserId = user.Id },
                 new Parameter { Name = "Mail.SenderName", Value = "Administrator", Description = "Naam van de smtp-verzender", Destination = "Mail", UserId = user.Id }
             );
-                );
+            context.SaveChanges();
         }
+
+        Globals.Parameters = new Dictionary<string, Parameter>();
+        foreach (Parameter parameter in context.Parameters)
+        {
+            Globals.Parameters[parameter.Name] = parameter;
+        }
+        Globals.ConfigureMail();
     }
 
     public DbSet<GroupSpace23.Models.Group> Groups { get; set; } = default!;

@@ -60,7 +60,12 @@ namespace GroupSpace23.Controllers
             {
                 try
                 {
+                    parameter.UserId = _context.Users.First(u => u.Id == User.Identity.Name).Id;
+                    parameter.LastChanged = DateTime.Now;
                     _context.Update(parameter);
+                    Globals.Parameters[parameter.Name] = parameter;
+                    if (parameter.Destination == "Mail")
+                        Globals.ConfigureMail();
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

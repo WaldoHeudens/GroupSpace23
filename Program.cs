@@ -19,7 +19,7 @@ namespace GroupSpace23
             builder.Services.AddDbContext<MyDbContext>(options =>
                 options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string 'GroupSpace23Context' not found.")));
 
-            builder.Services.AddDefaultIdentity<GroupSpace23User>((IdentityOptions options) => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<GroupSpace23User>((IdentityOptions options) => options.SignIn.RequireConfirmedAccount = true)
                .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<MyDbContext>();
 
@@ -65,6 +65,7 @@ namespace GroupSpace23
      //       builder.Services.AddMvc();
 
             var app = builder.Build();
+            Globals.App = app;          // Zorg ervoor dat we altijd een instantie van de huidige app bijhouden
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
