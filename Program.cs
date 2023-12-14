@@ -24,6 +24,9 @@ namespace GroupSpace23
                .AddEntityFrameworkStores<MyDbContext>();
 
             builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+ 
+            // De volgende configuratie van de MailKit wordt toegevoegd als demonstratie, maar gebruiken we niet.
+            // Deze is "overschreven" door het gebruik van de database-parameters in Globals, en ge�nitialiseerd in de data Initializer
             builder.Services.Configure<MailKitOptions>(options =>
             {
                 options.Server = builder.Configuration["ExternalProviders:MailKit:SMTP:Address"];
@@ -32,8 +35,6 @@ namespace GroupSpace23
                 options.Password = builder.Configuration["ExternalProviders:MailKit:SMTP:Password"];
                 options.SenderEmail = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"];
                 options.SenderName = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderName"];
-
-                // Set it to TRUE to enable ssl or tls, FALSE otherwise
                 options.Security = true;  // true zet ssl or tls aan
             });
 

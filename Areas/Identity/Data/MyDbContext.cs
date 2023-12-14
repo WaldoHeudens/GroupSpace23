@@ -60,13 +60,16 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         {
             context.Roles.AddRange(
                 new IdentityRole { Name = "SystemAdministrator", Id = "SystemAdministrator", NormalizedName = "SYSTEMADMINISTRATOR" },
-                new IdentityRole { Name = "User", Id = "User", NormalizedName = "USER" }
+                new IdentityRole { Name = "User", Id = "User", NormalizedName = "USER" },
+                new IdentityRole { Name = "UserAdministrator", Id = "UserAdministrator", NormalizedName = "USERADMINISTRATOR" }
             );
 
             context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "SystemAdministrator", UserId = admin.Id });
+            context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "UserAdministrator", UserId = admin.Id });
 
             context.SaveChanges();
         }
+
 
         if (!context.Groups.Any())
         {
@@ -132,5 +135,6 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
     public DbSet<GroupSpace23.Models.Parameter> Parameters { get; set; } = default!;
 
     public DbSet<GroupSpace23.Models.GroupMember> GroupMembers { get; set; } = default!;
+
 
 }
