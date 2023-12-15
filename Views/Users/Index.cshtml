@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
     string kommastring = "";
+    string vertikaalStreepje = " | ";
 }
 
 <h1>Gebruikers</h1>
@@ -25,6 +26,24 @@
                 Rollen
             </th>
             <th></th>
+        </tr>
+        <tr>
+            <form asp-action="Index" asp-controller="Users" method="get">
+                <th>
+                    <input type="text" name="userName" class="form-control" value=@ViewData["userName"] onchange="$(this.form).submit();"/>
+                </th>
+                <th>
+                <input type="text" name="firstName" class="form-control" value=@ViewData["firstName"] onchange="$(this.form).submit();"/>
+                </th>
+                <th>
+                <input type="text" name="lastName" class="form-control" value=@ViewData["lastName"] onchange="$(this.form).submit();"/>
+                </th>
+                <th>
+                <input type="text" name="email" class="form-control" value=@ViewData["email"] onchange="$(this.form).submit()"/>
+                </th>
+                <th> </th>
+                <th></th>
+            </form>
         </tr>
     </thead>
     <tbody>
@@ -53,6 +72,15 @@
                 }
             </td>
             <td>
+                @if (item.Blocked)
+                {
+                        <a asp-action="UnBlock" asp-route-userName="@item.UserName">Deblokkeren</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Block" asp-route-userName="@item.UserName">Blokkeren</a> @vertikaalStreepje
+                        <a asp-action="Roles" asp-route-userName="@item.UserName">Rollen</a>
+                    }
             </td>
          </tr>
 }

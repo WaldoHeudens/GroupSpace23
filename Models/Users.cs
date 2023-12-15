@@ -24,4 +24,13 @@ namespace GroupSpace23.Models
         public List<string> Roles { get; set; }
 
     }
+
+    public class UserRolesViewModel
+    {
+        [Display (Name ="Gebruiker")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Rollen")]
+        public List<string> Roles { get; set; }
+    }
 }
