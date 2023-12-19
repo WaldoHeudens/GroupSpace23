@@ -3,6 +3,7 @@ using GroupSpace23.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace GroupSpace23.Data;
 
@@ -16,7 +17,19 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
 
     public static async Task DataInitializer(MyDbContext context, UserManager<GroupSpace23User> userManager)
     {
+        if (!context.Languages.Any())
+        {
+            context.AddRange(
+                new Language { Id = "- ", Name = "-", IsSystemLanguage = false, IsAvailable = DateTime.MaxValue},
+                new Language { Id= "en", Name="English", IsSystemLanguage = true  },
+                new Language { Id = "nl", Name = "Nederlands", IsSystemLanguage = true },
+                new Language { Id = "fr", Name = "français", IsSystemLanguage = true },
+                new Language { Id = "de", Name = "Deutsch", IsSystemLanguage = true }
+                );
+            context.SaveChanges();
+        }
 
+        Language.GetLanguages(context);
 
         if (!context.Users.Any())
         {
@@ -135,6 +148,8 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
     public DbSet<GroupSpace23.Models.Parameter> Parameters { get; set; } = default!;
 
     public DbSet<GroupSpace23.Models.GroupMember> GroupMembers { get; set; } = default!;
+
+    public DbSet<GroupSpace23.Models.Language> Languages { get; set; } = default!;
 
 
 }

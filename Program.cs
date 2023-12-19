@@ -6,6 +6,7 @@ using GroupSpace23.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GroupSpace2022.Services;
 using NETCore.MailKit.Infrastructure.Internal;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace GroupSpace23
 {
@@ -38,6 +39,11 @@ namespace GroupSpace23
                 options.Security = true;  // true zet ssl or tls aan
             });
 
+            // Add services for globalization/localization
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Translations");
+            builder.Services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -63,7 +69,6 @@ namespace GroupSpace23
                 options.User.RequireUniqueEmail = false;
             });
 
-     //       builder.Services.AddMvc();
 
             var app = builder.Build();
             Globals.App = app;          // Zorg ervoor dat we altijd een instantie van de huidige app bijhouden
@@ -87,6 +92,11 @@ namespace GroupSpace23
                 await MyDbContext.DataInitializer(context, userManager);
             }
 
+            var supportedCultures = new[] {"en-US", "fr", "nl" };
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+            app.UseRequestLocalization(localizationOptions);
 
             app.MapControllerRoute(
                 name: "default",

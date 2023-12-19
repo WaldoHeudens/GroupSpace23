@@ -4,6 +4,7 @@ using GroupSpace23.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GroupSpace23.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class GroupSpace23ContextModelSnapshot : ModelSnapshot
+    [Migration("20231219101100_Languages")]
+    partial class Languages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,7 +192,7 @@ namespace GroupSpace23.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("GroupSpace23.Models.Message", b =>
