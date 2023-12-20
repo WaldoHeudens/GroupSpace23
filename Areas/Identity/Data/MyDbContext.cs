@@ -21,7 +21,7 @@ public class MyDbContext : IdentityDbContext<GroupSpace23User>
         {
             context.AddRange(
                 new Language { Id = "- ", Name = "-", IsSystemLanguage = false, IsAvailable = DateTime.MaxValue},
-                new Language { Id= "en", Name="English", IsSystemLanguage = true  },
+                new Language { Id = "en", Name = "English", IsSystemLanguage = true  },
                 new Language { Id = "nl", Name = "Nederlands", IsSystemLanguage = true },
                 new Language { Id = "fr", Name = "français", IsSystemLanguage = true },
                 new Language { Id = "de", Name = "Deutsch", IsSystemLanguage = true }

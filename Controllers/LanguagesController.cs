@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 
 namespace GroupSpace23.Controllers
 {
@@ -20,6 +21,7 @@ namespace GroupSpace23.Controllers
         {
             _context = context;
         }
+
 
         // GET: Languages
         public async Task<IActionResult> Index()
@@ -108,6 +110,30 @@ namespace GroupSpace23.Controllers
         private bool LanguageExists(string id)
         {
           return (_context.Languages?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        [AllowAnonymous]
+        public IActionResult ChangeLanguage(string id, string returnUrl)
+        {
+            string culture = Thread.CurrentThread.CurrentCulture.ToString();
+            try
+            {
+                culture = id + culture.Substring(2, 3);
+            }
+            catch
+            {
+                culture = id + "-BE";
+            }
+
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                );
+
+
+            return LocalRedirect(returnUrl);
         }
     }
 }

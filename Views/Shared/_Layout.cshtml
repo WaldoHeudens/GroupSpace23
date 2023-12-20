@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,28 +25,28 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@_localizer["Start"]</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Index">Groepen</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Index">@_localizer["Groepen"]</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Boodschappen</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">@_localizer["Boodschappen"]</a>
                             </li>
                         }
                         @if (User.IsInRole("SystemAdministrator"))
                         {
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">Systeem</a> 
+                                <a href="#" class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">@_localizer["Systeem"]</a> 
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Parameters" asp-action="Index">Parameters</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Parameters" asp-action="Index">@_localizer["Parameters"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Languages" asp-action="Index">Languages</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Languages" asp-action="Index">@_localizer["Talen"]</a>
                                     </li>
                                 </ul>
                             </li>
@@ -49,10 +54,10 @@
                         @if (User.IsInRole("UserAdministrator"))
                         {
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">Gebruikers</a>
+                                <a href="#" class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">@_localizer["Gebruikers"]</a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Gebruikersbeheer</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">@_localizer["Gebruikersbeheer"]</a>
                                     </li>
                                 </ul>
                             </li>
