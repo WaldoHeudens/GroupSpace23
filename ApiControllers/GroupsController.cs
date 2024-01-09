@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroupSpace23.ApiControllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class GroupsController : ControllerBase
     {
@@ -25,30 +27,37 @@ namespace GroupSpace23.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
         {
-          if (_context.Groups == null)
-          {
-              return NotFound();
+            if (_context.Groups == null)
+            {
+                return NotFound();
             }
             return await _context.Groups.Where(g => g.Ended > DateTime.Now).ToListAsync();
         }
 
         // GET: api/Groups/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(int id)
+        [HttpGet("{name}/{id}")]
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroup(string name, int id=0)
         {
-          if (_context.Groups == null)
-          {
-              return NotFound();
-          }
-            var @group = await _context.Groups.FindAsync(id);
-
-            if (@group == null)
+            if (_context.Groups == null)
             {
                 return NotFound();
             }
+            if (id != 0)
+                return await _context.Groups.Where(group => group.Id == id && group.Ended > DateTime.Now).ToListAsync();
+            else
+                if (name != "")
+                    return await _context.Groups.Where(group => group.Name.Contains(name) && group.Ended > DateTime.Now).ToListAsync();
 
-            return @group;
+            return NotFound();
+
         }
+
+        //[HttpGet("{name}")]
+        //public async Task<ActionResult<IEnumerable<Group>>> GetGroups(string name)
+        //{
+        //    return await _context.Groups.Where(group => group.Name.Contains(name) && group.Ended > DateTime.Now).ToListAsync();
+        //}
+
 
 
 
