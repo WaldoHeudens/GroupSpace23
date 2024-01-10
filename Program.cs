@@ -8,6 +8,7 @@ using GroupSpace2022.Services;
 using NETCore.MailKit.Infrastructure.Internal;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.OpenApi.Models;
+using GroupSpace23.Services;
 
 namespace GroupSpace23
 {
@@ -78,6 +79,8 @@ namespace GroupSpace23
                 options.User.RequireUniqueEmail = false;
             });
 
+            // Onze dependency aankondigen als service
+            builder.Services.AddTransient<IMyUser, MyUser>();
 
             var app = builder.Build();
 
@@ -119,6 +122,8 @@ namespace GroupSpace23
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            app.UseMiddleware<UserStats>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

@@ -3,6 +3,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 
+@{
+    int number = 0;
+}
 
 <html lang="en">
 <head>
@@ -80,7 +83,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - GroupSpace23 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                number = GroupSpace23.Services.UserStats.GetCountofRequest(User.Identity.Name);
+            }
+            &copy; 2023 - GroupSpace23 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy  @number</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

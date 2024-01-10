@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
 using GroupSpace23.Areas.Identity.Data;
+using GroupSpace23.Services;
 
 namespace GroupSpace23.Controllers
 {
     public class MessagesController : Controller
     {
         private readonly MyDbContext _context;
+        private readonly GroupSpace23User _myUser;
 
-        public MessagesController(MyDbContext context)
+        public MessagesController(MyDbContext context, IMyUser myUser)
         {
             _context = context;
+            _myUser = myUser.User();
         }
 
         // GET: Messages
@@ -43,7 +46,8 @@ namespace GroupSpace23.Controllers
             }
             else
             {
-                GroupSpace23User user = _context.Users.First(u => u.UserName == User.Identity.Name);
+//                GroupSpace23User user = _context.Users.First(u => u.UserName == User.Identity.Name);
+                GroupSpace23User user = _myUser;
                 viewModel.Messages = _context.Messages
                                    .Where(m => m.Deleted > DateTime.Now && m.SenderId == user.Id)
                                    .Include(m => m.Recipient)
@@ -91,8 +95,10 @@ namespace GroupSpace23.Controllers
         {
             if (ModelState.IsValid)
             {
-                message.Sender = _context.Users.First(u => u.UserName == User.Identity.Name);
-                message.SenderId = _context.Users.First(u => u.UserName == User.Identity.Name).Id;
+                //                message.Sender = _context.Users.First(u => u.UserName == User.Identity.Name);
+                //                message.SenderId = _context.Users.First(u => u.UserName == User.Identity.Name).Id;
+                message.Sender = _myUser;
+                message.SenderId = _myUser.Id;
                 message.Sent = DateTime.Now;
                 _context.Add(message);
                  await _context.SaveChangesAsync();

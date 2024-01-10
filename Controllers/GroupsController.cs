@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GroupSpace23.Data;
 using GroupSpace23.Models;
 using Microsoft.AspNetCore.Authorization;
+using GroupSpace23.Services;
+using GroupSpace23.Areas.Identity.Data;
 
 namespace GroupSpace23.Controllers
 {
@@ -15,10 +17,13 @@ namespace GroupSpace23.Controllers
     public class GroupsController : Controller
     {
         private readonly MyDbContext _context;
+//        private readonly IMyUser _myUser;
+        private readonly GroupSpace23User _myUser;
 
-        public GroupsController(MyDbContext context)
+        public GroupsController(MyDbContext context, IMyUser myUser)
         {
             _context = context;
+            _myUser = myUser.User();
         }
 
         [AllowAnonymous]
@@ -64,7 +69,8 @@ namespace GroupSpace23.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(@group);
-                group.StartedById = _context.Users.First(u => u.UserName == User.Identity.Name).Id;
+ //               group.StartedById = _context.Users.First(u => u.UserName == User.Identity.Name).Id;
+                group.StartedById = _myUser.Id;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
