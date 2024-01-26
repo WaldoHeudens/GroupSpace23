@@ -9,6 +9,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.OpenApi.Models;
 using GroupSpace23.Services;
+using AspNetCore.Unobtrusive.Ajax;
 
 namespace GroupSpace23
 {
@@ -82,6 +83,9 @@ namespace GroupSpace23
             // Onze dependency aankondigen als service
             builder.Services.AddTransient<IMyUser, MyUser>();
 
+            // Toe te voegen om Ajax te gebruiken
+            builder.Services.AddUnobtrusiveAjax();
+
             var app = builder.Build();
 
             Globals.App = app;          // Zorg ervoor dat we altijd een instantie van de huidige app bijhouden
@@ -99,7 +103,10 @@ namespace GroupSpace23
             }
             app.UseStaticFiles();
 
-            
+            // Middleware for unobrusive-ajax
+            app.UseUnobtrusiveAjax();
+
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

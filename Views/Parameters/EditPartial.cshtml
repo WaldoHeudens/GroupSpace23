@@ -1,0 +1,19 @@
+﻿@model GroupSpace23.Models.Parameter
+
+@{ 
+    Layout = null;
+}
+
+@using (Html.AjaxBeginForm("EditPartial", "Parameters", new AjaxOptions {HttpMethod="post", InsertionMode=InsertionMode.Replace, UpdateTargetId=Model.Name}))
+{
+    <td id="#@Model.Name">
+        <input type="hidden" asp-for="Name" />
+        <input asp-for="Value"  class="form-control" onchange="$(this.form).submit();" />
+    </td>
+}
+
+@* @section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+ *@
